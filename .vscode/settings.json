@@ -67,5 +67,8 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "bird.slnx"
+    "dotnet.defaultSolution": "bird.slnx",
+    "git.ignoredRepositories": [
+        ".archiver_shadow"
+    ]
 }
