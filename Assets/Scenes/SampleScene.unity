@@ -651,7 +651,7 @@ MonoBehaviour:
   jumpForce: 8
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   groundCheckDistance: 0.1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
