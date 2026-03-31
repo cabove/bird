@@ -1,16 +1,37 @@
 using UnityEngine;
-//this is a to test the script
-public class birdscript : MonoBehaviour
+using UnityEngine.InputSystem;
+
+public class PlayerJump : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public Rigidbody2D rb;
+    public float jumpForce = 8f;
+    public LayerMask groundLayer;
+    public float groundCheckDistance = 0.1f;
+
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        bool isGrounded = IsGrounded();
         
+        if (Keyboard.current.spaceKey.wasPressedThisFrame && isGrounded)
+        {
+            Jump();
+        }
+    }
+
+    bool IsGrounded()
+    {
+        // Cast a ray downward to check if touching ground
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer);
+        return hit.collider != null;
+    }
+
+    void Jump()
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
     }
 }
