@@ -18,7 +18,10 @@ public class birdscript : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(moveSpeed, rb.linearVelocity.y);
+        if (IsGrounded())
+        {
+            rb.linearVelocity = new Vector2(moveSpeed, rb.linearVelocity.y);
+        }
     }
 
     void Update()
