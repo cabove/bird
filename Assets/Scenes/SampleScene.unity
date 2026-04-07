@@ -388,7 +388,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.13, y: -1.79, z: -10}
+  m_LocalPosition: {x: -9.66, y: -1.79, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -508,7 +508,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineManager
   linePrefab: {fileID: 2916662682731838042, guid: 782a06a20fcbf834dbbc18ff99edc893, type: 3}
-  currentLinePosition: {x: -8, y: 1, z: 0}
+  currentLinePosition: {x: -8, y: -3.5, z: 0}
   previewLinePosition: {x: -8, y: -5, z: 0}
 --- !u!4 &772044310
 Transform:
@@ -1267,11 +1267,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5053472071514840770, guid: 4428c12165b8cf7458945a2b23e97f81, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -24.99
+      value: -19.35
       objectReference: {fileID: 0}
     - target: {fileID: 5053472071514840770, guid: 4428c12165b8cf7458945a2b23e97f81, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.84
+      value: -0.97
       objectReference: {fileID: 0}
     - target: {fileID: 5053472071514840770, guid: 4428c12165b8cf7458945a2b23e97f81, type: 3}
       propertyPath: m_LocalPosition.z
