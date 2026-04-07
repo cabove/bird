@@ -3,36 +3,27 @@ using UnityEngine;
 
 public static class RhythmGenerator
 {
-    private static List<float[]> measurePatterns = new List<float[]>
-    {
-        new float[] { 0f, 1f, 2f, 3f },
-        new float[] { 0f, 2f, 3f },
-        new float[] { 0f, 1f, 2.5f },
-        new float[] { 0f, 1.5f, 2f, 3.5f },
-        new float[] { 0f, 0.5f, 1.5f, 2.5f },
-        new float[] { 0f, 2f },
-        new float[] { 0f, 1f, 3f }
-    };
+    private const int NotesPerMeasure = 4;
 
     public static MusicLineData GenerateRandomLine()
     {
         MusicLineData line = new MusicLineData();
 
+        // Create tightly grouped notes: 4 notes per measure
         for (int measure = 0; measure < line.measureCount; measure++)
         {
             float measureStartBeat = measure * line.beatsPerMeasure;
-
-            float[] chosenPattern = measurePatterns[Random.Range(0, measurePatterns.Count)];
-
-            foreach (float beatInMeasure in chosenPattern)
+            
+            // Space 4 notes tightly within the measure
+            for (int noteInMeasure = 0; noteInMeasure < NotesPerMeasure; noteInMeasure++)
             {
                 NoteEvent note = new NoteEvent();
-                note.beatPosition = measureStartBeat + beatInMeasure;
+                // Cluster notes within measure: spread from beat 0.4 to 3.6 for tight grouping
+                float beatOffset = 0.4f + (noteInMeasure * 0.8f);
+                note.beatPosition = measureStartBeat + beatOffset;
                 line.notes.Add(note);
             }
         }
-
-        line.notes.Sort((a, b) => a.beatPosition.CompareTo(b.beatPosition));
 
         return line;
     }

@@ -4,8 +4,8 @@ public class LineManager : MonoBehaviour
 {
     public LineSegment linePrefab;
 
-    public Vector3 currentLinePosition = new Vector3(-8f, 1f, 0f);
-    public Vector3 previewLinePosition = new Vector3(-8f, -1.5f, 0f);
+    public Vector3 currentLinePosition = new Vector3(-8f, 0.05f, 0f);
+    public Vector3 previewLinePosition = new Vector3(-8f, -0.05f, 0f);
 
     private LineSegment currentLine;
     private LineSegment previewLine;

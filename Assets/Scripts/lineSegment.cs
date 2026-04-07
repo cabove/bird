@@ -25,7 +25,7 @@ public class LineSegment : MonoBehaviour
 
     void CreateNotes()
     {
-        if (currentData == null) return;
+        if (currentData == null || notePrefab == null) return;
 
         float totalBeats = currentData.TotalBeats;
         float leftX = -lineWidth / 2f;
@@ -37,7 +37,8 @@ public class LineSegment : MonoBehaviour
             float x = Mathf.Lerp(leftX, rightX, t);
 
             GameObject noteObj = Instantiate(notePrefab, notesParent);
-            noteObj.transform.localPosition = new Vector3(x, noteY, 0f);
+            noteObj.transform.localPosition = new Vector3(x, 0f, 0f);
+            noteObj.transform.localScale = new Vector3(0.45f, 0.45f, 1f);
         }
     }
 
