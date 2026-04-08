@@ -58,7 +58,7 @@ public class LineSegment : MonoBehaviour
 
             GameObject barLine = new GameObject("BarLine");
             barLine.transform.SetParent(barLinesParent);
-            barLine.transform.localPosition = new Vector3(x, noteY, 0f);
+            barLine.transform.localPosition = new Vector3(x, noteY + .5f, 0f);
 
             SpriteRenderer sr = barLine.AddComponent<SpriteRenderer>();
             sr.sprite = notePrefab.GetComponent<SpriteRenderer>().sprite;

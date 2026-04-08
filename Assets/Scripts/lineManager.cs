@@ -6,7 +6,7 @@ public class LineManager : MonoBehaviour
     public Transform player;
     public Vector3 currentLinePosition = new Vector3(0f, 0.75f, 0f);
     public Vector3 previewLinePosition = new Vector3(0f, -0.75f, 0f);
-    public Vector3 playerStartPosition = new Vector3(-6.5f, 1.15f, 0f);
+    public Vector3 playerStartPosition = new Vector3(-6.5f, 1.1f, 0f);
     private LineSegment currentLine;
     private LineSegment previewLine;
 
