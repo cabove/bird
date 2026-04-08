@@ -508,10 +508,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineManager
   linePrefab: {fileID: 2916662682731838042, guid: 782a06a20fcbf834dbbc18ff99edc893, type: 3}
-  player: {fileID: 1217816083}
   currentLinePosition: {x: 0, y: 0.75, z: 0}
   previewLinePosition: {x: 0, y: -0.75, z: 0}
-  playerStartPosition: {x: -6.5, y: 1.1, z: 0}
+  player: {fileID: 1217816083}
+  playerStartX: -6.5
+  playerEndX: 6.5
+  playerY: 1.1
   bpm: 72
   beatsPerMeasure: 4
   measuresPerLine: 4
@@ -740,8 +742,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb93be88868f2a94fad091f0a6c18052, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::birdscript
-  lineWidth: 16
-  timeToCrossLine: 8
   jumpForce: 2
   groundLayer:
     serializedVersion: 2
@@ -1283,7 +1283,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1872592444}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f9f47bc8cee02e47ab3b51017abf691, type: 3}
   m_Name: 

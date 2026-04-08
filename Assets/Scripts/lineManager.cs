@@ -3,16 +3,22 @@ using UnityEngine;
 public class LineManager : MonoBehaviour
 {
     public LineSegment linePrefab;
-    public Transform player;
+
     public Vector3 currentLinePosition = new Vector3(0f, 0.75f, 0f);
     public Vector3 previewLinePosition = new Vector3(0f, -0.75f, 0f);
-    public Vector3 playerStartPosition = new Vector3(-6.5f, 1.1f, 0f);
+
+    public Transform player;
+    public float playerStartX = -6.5f;
+    public float playerEndX = 6.5f;
+    public float playerY = 1.1f;
+
     public float bpm = 72f;
     public int beatsPerMeasure = 4;
     public int measuresPerLine = 4;
 
     private float lineDuration;
     private float lineTimer = 0f;
+
     private LineSegment currentLine;
     private LineSegment previewLine;
 
@@ -22,16 +28,34 @@ public class LineManager : MonoBehaviour
         lineDuration = secondsPerBeat * beatsPerMeasure * measuresPerLine;
 
         SpawnInitialLines();
+
+        if (player != null)
+        {
+            player.position = new Vector3(playerStartX, playerY, 0f);
+        }
     }
+
     void Update()
     {
         lineTimer += Time.deltaTime;
+
+        float t = Mathf.Clamp01(lineTimer / lineDuration);
+
+        UpdatePlayerPosition(t);
 
         if (lineTimer >= lineDuration)
         {
             lineTimer = 0f;
             AdvanceLine();
         }
+    }
+
+    void UpdatePlayerPosition(float t)
+    {
+        if (player == null) return;
+
+        float x = Mathf.Lerp(playerStartX, playerEndX, t);
+        player.position = new Vector3(x, player.position.y, player.position.z);
     }
 
     void SpawnInitialLines()
@@ -70,7 +94,7 @@ public class LineManager : MonoBehaviour
 
         if (player != null)
         {
-            player.position = playerStartPosition;
+            player.position = new Vector3(playerStartX, playerY, 0f);
 
             Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
             if (playerRb != null)
