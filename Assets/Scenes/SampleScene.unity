@@ -745,7 +745,7 @@ MonoBehaviour:
   startX: -7.5
   endX: 7.5
   timeToCrossLine: 13.333
-  jumpForce: 2
+  jumpForce: 4
   groundLayer:
     serializedVersion: 2
     m_Bits: 4294967295
