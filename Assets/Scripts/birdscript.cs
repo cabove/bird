@@ -4,7 +4,7 @@ using UnityEngine;
 public class birdscript : MonoBehaviour
 {
     public float lineWidth = 16f;
-    public float timeToCrossLine = 13.71f;
+    public float timeToCrossLine = 13.333f;
     public float jumpForce = 7f;
     public LayerMask groundLayer;
     public float groundCheckDistance = 0.2f;
