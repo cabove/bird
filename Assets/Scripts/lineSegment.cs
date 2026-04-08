@@ -5,6 +5,7 @@ public class LineSegment : MonoBehaviour
     public Transform notesParent;
     public Transform barLinesParent;
     public GameObject notePrefab;
+    public Sprite barLineSprite;
 
     public float lineWidth = 16f;
     public float noteY = 0.8f;
@@ -39,6 +40,12 @@ public class LineSegment : MonoBehaviour
             GameObject noteObj = Instantiate(notePrefab, notesParent);
             noteObj.transform.localPosition = new Vector3(x, noteY, 0f);
             noteObj.transform.localScale = new Vector3(0.45f, 0.45f, 1f);
+
+            SpriteRenderer noteSr = noteObj.GetComponent<SpriteRenderer>();
+            if (noteSr != null)
+            {
+                noteSr.sortingOrder = 2;
+            }
         }
     }
 
@@ -58,13 +65,14 @@ public class LineSegment : MonoBehaviour
 
             GameObject barLine = new GameObject("BarLine");
             barLine.transform.SetParent(barLinesParent);
-            barLine.transform.localPosition = new Vector3(x, noteY + .5f, 0f);
+            barLine.transform.localPosition = new Vector3(x, noteY + .15f, 0f);
 
             SpriteRenderer sr = barLine.AddComponent<SpriteRenderer>();
-            sr.sprite = notePrefab.GetComponent<SpriteRenderer>().sprite;
+            sr.sprite = barLineSprite;
             sr.color = Color.black;
+            sr.sortingOrder = 2;
 
-            barLine.transform.localScale = new Vector3(0.05f, barLineHeight, 1f);
+            barLine.transform.localScale = new Vector3(0.03f, barLineHeight, 1f);
         }
     }
 

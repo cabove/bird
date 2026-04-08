@@ -81,9 +81,10 @@ MonoBehaviour:
   notesParent: {fileID: 6205749585703289485}
   barLinesParent: {fileID: 6239492828288965342}
   notePrefab: {fileID: 2345795898259405936, guid: 4428c12165b8cf7458945a2b23e97f81, type: 3}
+  barLineSprite: {fileID: 21300000, guid: cb924dc4d0b513b4a89a8bf4ede6ebf1, type: 3}
   lineWidth: 16
   noteY: 0
-  barLineHeight: 1
+  barLineHeight: 0.8
 --- !u!1 &5410910396061401844
 GameObject:
   m_ObjectHideFlags: 0
