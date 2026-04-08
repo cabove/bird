@@ -3,22 +3,33 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class birdscript : MonoBehaviour
 {
+    public float startX = -8f;
+    public float endX = 8f;
+    public float timeToCrossLine = 13.333f;
     public float jumpForce = 7f;
     public LayerMask groundLayer;
     public float groundCheckDistance = 0.5f;
 
     private Rigidbody2D rb;
+    private float moveSpeed;
 
     void Awake()
     {
+        transform.position = new Vector3(startX, transform.position.y, transform.position.z);
         rb = GetComponent<Rigidbody2D>();
+        moveSpeed = (endX - startX) / timeToCrossLine;
+    }
+
+    void FixedUpdate()
+    {
+        rb.linearVelocity = new Vector2(moveSpeed, rb.linearVelocity.y);
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
-            rb.linearVelocity = new Vector2(0f, jumpForce);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
     }
 

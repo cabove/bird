@@ -8,8 +8,8 @@ public class LineManager : MonoBehaviour
     public Vector3 previewLinePosition = new Vector3(0f, -0.75f, 0f);
 
     public Transform player;
-    public float playerStartX = -6.5f;
-    public float playerEndX = 6.5f;
+    public float playerStartX = -8f;
+    public float playerEndX = 8f;
     public float playerY = 1.1f;
 
     public float bpm = 72f;
@@ -55,7 +55,7 @@ public class LineManager : MonoBehaviour
         if (player == null) return;
 
         float x = Mathf.Lerp(playerStartX, playerEndX, t);
-        player.position = new Vector3(x, player.position.y, player.position.z);
+        player.position = new Vector3(x, player.position.y, 0f);
     }
 
     void SpawnInitialLines()
