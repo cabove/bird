@@ -3,10 +3,10 @@ using UnityEngine;
 public class LineManager : MonoBehaviour
 {
     public LineSegment linePrefab;
-
-    public Vector3 currentLinePosition = new Vector3(-8f, 0.05f, 0f);
-    public Vector3 previewLinePosition = new Vector3(-8f, -0.05f, 0f);
-
+    public Transform player;
+    public Vector3 currentLinePosition = new Vector3(0f, 0.75f, 0f);
+    public Vector3 previewLinePosition = new Vector3(0f, -0.75f, 0f);
+    public Vector3 playerStartPosition = new Vector3(-6.5f, 1.15f, 0f);
     private LineSegment currentLine;
     private LineSegment previewLine;
 
@@ -22,11 +22,13 @@ public class LineManager : MonoBehaviour
 
         currentLine = Instantiate(linePrefab, currentLinePosition, Quaternion.identity);
         currentLine.BuildLine(currentData);
+        SetCurrentLook(currentLine);
+        SetLineCollision(currentLine, true);
 
         previewLine = Instantiate(linePrefab, previewLinePosition, Quaternion.identity);
         previewLine.BuildLine(previewData);
-
         SetPreviewLook(previewLine);
+        SetLineCollision(previewLine, false);
     }
 
     public void AdvanceLine()
@@ -39,11 +41,24 @@ public class LineManager : MonoBehaviour
         currentLine = previewLine;
         currentLine.transform.position = currentLinePosition;
         SetCurrentLook(currentLine);
+        SetLineCollision(currentLine, true);
 
         MusicLineData newPreviewData = RhythmGenerator.GenerateRandomLine();
         previewLine = Instantiate(linePrefab, previewLinePosition, Quaternion.identity);
         previewLine.BuildLine(newPreviewData);
         SetPreviewLook(previewLine);
+        SetLineCollision(previewLine, false);
+
+        if (player != null)
+        {
+            player.position = playerStartPosition;
+
+            Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
+            if (playerRb != null)
+            {
+                playerRb.linearVelocity = Vector2.zero;
+            }
+        }
     }
 
     void SetPreviewLook(LineSegment line)
@@ -67,6 +82,16 @@ public class LineManager : MonoBehaviour
             Color c = sr.color;
             c.a = 1f;
             sr.color = c;
+        }
+    }
+
+    void SetLineCollision(LineSegment line, bool enabledState)
+    {
+        Collider2D[] colliders = line.GetComponentsInChildren<Collider2D>();
+
+        foreach (Collider2D col in colliders)
+        {
+            col.enabled = enabledState;
         }
     }
 }

@@ -1,32 +1,31 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class birdscript : MonoBehaviour
 {
-    public float moveSpeed = 2f;
+    public float lineWidth = 16f;
+    public float timeToCrossLine = 13.71f;
     public float jumpForce = 7f;
     public LayerMask groundLayer;
-    public float groundCheckDistance = 0.1f;
+    public float groundCheckDistance = 0.5f;
 
     private Rigidbody2D rb;
+    private float moveSpeed;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        moveSpeed = lineWidth / timeToCrossLine;
     }
 
     void FixedUpdate()
     {
-        if (IsGrounded())
-        {
-            rb.linearVelocity = new Vector2(moveSpeed, rb.linearVelocity.y);
-        }
+        rb.linearVelocity = new Vector2(moveSpeed, rb.linearVelocity.y);
     }
 
     void Update()
     {
-        if (Keyboard.current.spaceKey.wasPressedThisFrame && IsGrounded())
+        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }

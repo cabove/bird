@@ -37,7 +37,7 @@ public class LineSegment : MonoBehaviour
             float x = Mathf.Lerp(leftX, rightX, t);
 
             GameObject noteObj = Instantiate(notePrefab, notesParent);
-            noteObj.transform.localPosition = new Vector3(x, 0f, 0f);
+            noteObj.transform.localPosition = new Vector3(x, noteY, 0f);
             noteObj.transform.localScale = new Vector3(0.45f, 0.45f, 1f);
         }
     }
@@ -58,7 +58,7 @@ public class LineSegment : MonoBehaviour
 
             GameObject barLine = new GameObject("BarLine");
             barLine.transform.SetParent(barLinesParent);
-            barLine.transform.localPosition = new Vector3(x, 0.5f, 0f);
+            barLine.transform.localPosition = new Vector3(x, noteY, 0f);
 
             SpriteRenderer sr = barLine.AddComponent<SpriteRenderer>();
             sr.sprite = notePrefab.GetComponent<SpriteRenderer>().sprite;
