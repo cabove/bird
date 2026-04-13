@@ -13,6 +13,8 @@ public class birdscript : MonoBehaviour
     private Rigidbody2D rb;
     private float moveSpeed;
 
+    public bool allowAutoMove = true;
+
     void Awake()
     {
         transform.position = new Vector3(startX, transform.position.y, transform.position.z);
@@ -22,6 +24,12 @@ public class birdscript : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!allowAutoMove)
+        {
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            return;
+        }
+
         rb.linearVelocity = new Vector2(moveSpeed, rb.linearVelocity.y);
     }
 
