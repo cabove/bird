@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class RhythmManager : MonoBehaviour
 {
@@ -9,9 +8,10 @@ public class RhythmManager : MonoBehaviour
     public float bpm = 120f;
     public float songOffset = 0f;
 
-    [Header("Scene Transition")]
-    public string resultsSceneName = "Results";
-    public bool autoLoadResultsOnSongEnd = true;
+    [Header("Results Panel (Same Scene)")]
+    public bool autoShowResultsPanelOnSongEnd = true;
+    public GameObject resultsPanel;
+    public GameObject[] gameplayObjectsToDisableOnSongEnd;
 
     private float secondsPerBeat;
     private bool hasTriggeredSongEnd = false;
@@ -24,21 +24,28 @@ public class RhythmManager : MonoBehaviour
 
     void Start()
     {
-        if (audioSource != null)
-        {
-            audioSource.Play();
-        }
+        if (resultsPanel != null) resultsPanel.SetActive(false);
+        if (audioSource != null) audioSource.Play();
     }
 
     void Update()
     {
-        if (!autoLoadResultsOnSongEnd || hasTriggeredSongEnd) return;
+        if (!autoShowResultsPanelOnSongEnd || hasTriggeredSongEnd) return;
         if (audioSource == null || audioSource.clip == null) return;
 
         if (!audioSource.isPlaying && audioSource.time >= audioSource.clip.length)
         {
             hasTriggeredSongEnd = true;
-            SceneManager.LoadScene(resultsSceneName);
+
+            if (gameplayObjectsToDisableOnSongEnd != null)
+            {
+                foreach (GameObject go in gameplayObjectsToDisableOnSongEnd)
+                {
+                    if (go != null) go.SetActive(false);
+                }
+            }
+
+            if (resultsPanel != null) resultsPanel.SetActive(true);
         }
     }
 
