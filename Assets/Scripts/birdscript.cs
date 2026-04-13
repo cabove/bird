@@ -8,7 +8,7 @@ public class birdscript : MonoBehaviour
     public float timeToCrossLine = 13.333f;
     public float jumpForce = 7f;
     public LayerMask groundLayer;
-    public float groundCheckDistance = 0.5f;
+    public float groundCheckDistance = 0.3f;
 
     private Rigidbody2D rb;
     private float moveSpeed;

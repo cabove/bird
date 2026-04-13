@@ -71,7 +71,7 @@ public class LineManager : MonoBehaviour
             bird.allowAutoMove = false;
 
         Vector3 startPos = player.position;
-        Vector3 endPos = new Vector3(playerStartX, playerY, startPos.z);
+        Vector3 endPos = new Vector3(playerStartX, player.position.y, startPos.z);
 
         float elapsed = 0f;
 
