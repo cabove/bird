@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RhythmManager : MonoBehaviour
 {
@@ -7,8 +8,12 @@ public class RhythmManager : MonoBehaviour
     public AudioSource audioSource;
     public float bpm = 120f;
     public float songOffset = 0f;
+    [Header("Scene Transition")]
+    public string resultsSceneName = "Results";
+    public bool autoLoadResultsOnSongEnd = true;
 
     private float secondsPerBeat;
+    private bool hasTriggeredSongEnd = false;
 
     void Awake()
     {
@@ -21,6 +26,18 @@ public class RhythmManager : MonoBehaviour
         if (audioSource != null)
         {
             audioSource.Play();
+        }
+    }
+
+    void Update()
+    {
+        if (!autoLoadResultsOnSongEnd || hasTriggeredSongEnd) return;
+        if (audioSource == null || audioSource.clip == null) return;
+
+        if (!audioSource.isPlaying && audioSource.time >= audioSource.clip.length)
+        {
+            hasTriggeredSongEnd = true;
+            SceneManager.LoadScene(resultsSceneName);
         }
     }
 
