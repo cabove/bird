@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class birdscript : MonoBehaviour
 {
+    public AudioSource drumSound;
     public float startX = -8f;
     public float endX = 8f;
     public float timeToCrossLine = 13.333f;
@@ -38,6 +39,11 @@ public class birdscript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+
+            if (drumSound != null)
+            {
+                drumSound.Play();
+            }
         }
     }
 
