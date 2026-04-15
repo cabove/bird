@@ -5,32 +5,25 @@ public class LineManager : MonoBehaviour
 {
     public LineSegment linePrefab;
 
-    public Vector3 currentLinePosition = new Vector3(0f, 0.75f, 0f);
-    public Vector3 previewLinePosition = new Vector3(0f, -0.75f, 0f);
+    public Vector3 currentLinePosition = new Vector3(-8f, 0.05f, 0f);
+    public Vector3 previewLinePosition = new Vector3(-8f, -0.05f, 0f);
 
     public Transform player;
-    public float playerStartX = -8f;
-    public float playerEndX = 8f;
-    public float playerY = 1.1f;
+    public float playerStartX = -7f;
+    public float playerEndX = 7f;
+    public float playerY = 0f;
 
-    public float sideSwitchDuration = 0.25f;
-
-    public int beatsPerMeasure = 4;
-    public int measuresPerLine = 4;
-
-    private float lineDurationInBeats;
-    private int currentLineStartBeat = 0;
+    public float sideSwitchDuration = 0.2f;
 
     private LineSegment currentLine;
     private LineSegment previewLine;
 
-    private birdscript bird;
     private bool isSwitching = false;
+
+    private birdscript bird;
 
     void Start()
     {
-        lineDurationInBeats = beatsPerMeasure * measuresPerLine;
-
         SpawnInitialLines();
 
         if (player != null)
@@ -43,24 +36,31 @@ public class LineManager : MonoBehaviour
     void Update()
     {
         if (isSwitching) return;
+        if (currentLine == null) return;
         if (RhythmManager.Instance == null) return;
 
+        MusicLineData currentData = currentLine.GetLineData();
+        if (currentData == null) return;
+
         float currentBeat = RhythmManager.Instance.GetCurrentBeat();
-        float lineProgressBeats = currentBeat - currentLineStartBeat;
-        float t = Mathf.Clamp01(lineProgressBeats / lineDurationInBeats);
+        float beatInLine = currentBeat - currentData.startBeat;
+
+        float t = Mathf.Clamp01(beatInLine / currentData.TotalBeats);
 
         UpdatePlayerPosition(t);
 
-        if (lineProgressBeats >= lineDurationInBeats)
+        if (beatInLine >= currentData.TotalBeats)
         {
-            currentLineStartBeat += (int)lineDurationInBeats;
             StartCoroutine(AdvanceLineAnimated());
         }
     }
 
     public void AdvanceLine()
     {
-        StartCoroutine(AdvanceLineAnimated());
+        if (!isSwitching)
+        {
+            StartCoroutine(AdvanceLineAnimated());
+        }
     }
 
     IEnumerator AdvanceLineAnimated()
@@ -71,7 +71,7 @@ public class LineManager : MonoBehaviour
             bird.allowAutoMove = false;
 
         Vector3 startPos = player.position;
-        Vector3 endPos = new Vector3(playerStartX, playerY, startPos.z);
+        Vector3 endPos = new Vector3(playerStartX, player.position.y, startPos.z);
 
         float elapsed = 0f;
 
@@ -92,8 +92,10 @@ public class LineManager : MonoBehaviour
         currentLine.transform.position = currentLinePosition;
         SetCurrentLook(currentLine);
 
+        MusicLineData currentData = currentLine.GetLineData();
+
         MusicLineData newPreviewData = RhythmGenerator.GenerateRandomLine();
-        newPreviewData.startBeat = currentLine.GetLineData().startBeat + currentLine.GetLineData().TotalBeats;
+        newPreviewData.startBeat = currentData.startBeat + currentData.TotalBeats;
 
         previewLine = Instantiate(linePrefab, previewLinePosition, Quaternion.identity);
         previewLine.BuildLine(newPreviewData);

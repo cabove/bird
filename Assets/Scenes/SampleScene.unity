@@ -407,9 +407,10 @@ MonoBehaviour:
   playerStartX: -7.5
   playerEndX: 7.5
   playerY: 1.485
-  sideSwitchDuration: 0.2
+  bpm: 72
   beatsPerMeasure: 4
   measuresPerLine: 4
+  sideSwitchDuration: 0
 --- !u!4 &772044310
 Transform:
   m_ObjectHideFlags: 0
@@ -697,9 +698,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::birdscript
   drumSound: {fileID: 1217816089}
-  startX: -7.5
-  endX: 7.5
-  timeToCrossLine: 13.333
   jumpForce: 4
   groundLayer:
     serializedVersion: 2

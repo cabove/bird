@@ -5,7 +5,7 @@ public class RhythmManager : MonoBehaviour
     public static RhythmManager Instance;
 
     public AudioSource audioSource;
-    public float bpm = 120f;
+    public float bpm = 72f;
     public float songOffset = 0f;
 
     [Header("Results Panel (Same Scene)")]

@@ -4,34 +4,23 @@ using UnityEngine;
 public class birdscript : MonoBehaviour
 {
     public AudioSource drumSound;
-    public float startX = -8f;
-    public float endX = 8f;
-    public float timeToCrossLine = 13.333f;
     public float jumpForce = 7f;
     public LayerMask groundLayer;
     public float groundCheckDistance = 0.3f;
 
     private Rigidbody2D rb;
-    private float moveSpeed;
 
     public bool allowAutoMove = true;
 
     void Awake()
     {
-        transform.position = new Vector3(startX, transform.position.y, transform.position.z);
         rb = GetComponent<Rigidbody2D>();
-        moveSpeed = (endX - startX) / timeToCrossLine;
     }
 
     void FixedUpdate()
     {
-        if (!allowAutoMove)
-        {
-            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-            return;
-        }
-
-        rb.linearVelocity = new Vector2(moveSpeed, rb.linearVelocity.y);
+        // Do not auto-move horizontally here.
+        // LineManager will control the X position.
     }
 
     void Update()
@@ -49,7 +38,13 @@ public class birdscript : MonoBehaviour
 
     bool IsGrounded()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer);
+        RaycastHit2D hit = Physics2D.Raycast(
+            transform.position,
+            Vector2.down,
+            groundCheckDistance,
+            groundLayer
+        );
+
         return hit.collider != null;
     }
 }

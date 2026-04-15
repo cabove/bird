@@ -13,8 +13,15 @@ public class HitJudge : MonoBehaviour
     public float goodWindow = 0.20f;
     public float missWindow = 0.35f;
 
-    private HashSet<int> usedNotes = new HashSet<int>();
+    private HashSet<string> usedHits = new HashSet<string>();
     private LineSegment lastLine;
+
+    private class HitTarget
+    {
+        public int noteIndex;
+        public float beat;
+        public string hitId;
+    }
 
     void Update()
     {
@@ -34,7 +41,7 @@ public class HitJudge : MonoBehaviour
 
         if (currentLine != lastLine)
         {
-            usedNotes.Clear();
+            usedHits.Clear();
             lastLine = currentLine;
         }
     }
@@ -69,28 +76,82 @@ public class HitJudge : MonoBehaviour
 
         float currentBeat = RhythmManager.Instance.GetCurrentBeat();
 
-        int closestIndex = -1;
-        float closestAbsDelta = Mathf.Infinity;
-        float closestDelta = 0f;
+        List<HitTarget> targets = new List<HitTarget>();
 
         for (int i = 0; i < lineData.notes.Count; i++)
         {
-            if (usedNotes.Contains(i))
-                continue;
+            NoteEvent note = lineData.notes[i];
 
-            float noteBeat = lineData.startBeat + lineData.notes[i].beatPosition;
-            float delta = currentBeat - noteBeat;
+            // QUARTER NOTE (1 hit)
+            if (note.noteType == NoteType.Quarter)
+            {
+                string hitId = i + "_0";
+
+                if (!usedHits.Contains(hitId))
+                {
+                    targets.Add(new HitTarget
+                    {
+                        noteIndex = i,
+                        beat = lineData.startBeat + note.beatPosition,
+                        hitId = hitId
+                    });
+                }
+            }
+
+            // EIGHTH PAIR (2 hits)
+            else if (note.noteType == NoteType.EighthPair)
+            {
+                string firstHitId = i + "_0";
+                string secondHitId = i + "_1";
+
+                // first eighth
+                if (!usedHits.Contains(firstHitId))
+                {
+                    targets.Add(new HitTarget
+                    {
+                        noteIndex = i,
+                        beat = lineData.startBeat + note.beatPosition,
+                        hitId = firstHitId
+                    });
+                }
+
+                // second eighth (half beat later)
+                if (!usedHits.Contains(secondHitId))
+                {
+                    targets.Add(new HitTarget
+                    {
+                        noteIndex = i,
+                        beat = lineData.startBeat + note.beatPosition + 0.5f,
+                        hitId = secondHitId
+                    });
+                }
+            }
+        }
+
+        if (targets.Count == 0)
+        {
+            Debug.Log("No available note found.");
+            return;
+        }
+
+        HitTarget closestTarget = null;
+        float closestAbsDelta = Mathf.Infinity;
+        float closestDelta = 0f;
+
+        for (int i = 0; i < targets.Count; i++)
+        {
+            float delta = currentBeat - targets[i].beat;
             float absDelta = Mathf.Abs(delta);
 
             if (absDelta < closestAbsDelta)
             {
                 closestAbsDelta = absDelta;
                 closestDelta = delta;
-                closestIndex = i;
+                closestTarget = targets[i];
             }
         }
 
-        if (closestIndex == -1)
+        if (closestTarget == null)
         {
             Debug.Log("No available note found.");
             return;
@@ -102,7 +163,7 @@ public class HitJudge : MonoBehaviour
             return;
         }
 
-        usedNotes.Add(closestIndex);
+        usedHits.Add(closestTarget.hitId);
 
         string timingSide;
         if (closestDelta < -0.01f)
