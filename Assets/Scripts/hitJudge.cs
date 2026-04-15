@@ -13,6 +13,10 @@ public class HitJudge : MonoBehaviour
     public float goodWindow = 0.20f;
     public float missWindow = 0.35f;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip missClip;
+
     private HashSet<string> usedHits = new HashSet<string>();
     private LineSegment lastLine;
 
@@ -82,7 +86,6 @@ public class HitJudge : MonoBehaviour
         {
             NoteEvent note = lineData.notes[i];
 
-            // QUARTER NOTE (1 hit)
             if (note.noteType == NoteType.Quarter)
             {
                 string hitId = i + "_0";
@@ -97,14 +100,11 @@ public class HitJudge : MonoBehaviour
                     });
                 }
             }
-
-            // EIGHTH PAIR (2 hits)
             else if (note.noteType == NoteType.EighthPair)
             {
                 string firstHitId = i + "_0";
                 string secondHitId = i + "_1";
 
-                // first eighth
                 if (!usedHits.Contains(firstHitId))
                 {
                     targets.Add(new HitTarget
@@ -115,7 +115,6 @@ public class HitJudge : MonoBehaviour
                     });
                 }
 
-                // second eighth (half beat later)
                 if (!usedHits.Contains(secondHitId))
                 {
                     targets.Add(new HitTarget
@@ -159,6 +158,7 @@ public class HitJudge : MonoBehaviour
 
         if (closestAbsDelta > missWindow)
         {
+            PlayMissSound();
             Debug.Log("MISS - too far from note");
             return;
         }
@@ -184,6 +184,14 @@ public class HitJudge : MonoBehaviour
         else
         {
             Debug.Log("OK - " + timingSide + " - delta: " + closestDelta.ToString("F3"));
+        }
+    }
+
+    void PlayMissSound()
+    {
+        if (audioSource != null && missClip != null)
+        {
+            audioSource.PlayOneShot(missClip);
         }
     }
 }
