@@ -408,7 +408,6 @@ MonoBehaviour:
   playerEndX: 7.5
   playerY: 1.485
   sideSwitchDuration: 0.2
-  bpm: 72
   beatsPerMeasure: 4
   measuresPerLine: 4
 --- !u!4 &772044310
@@ -631,7 +630,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: -4152600844543569769, guid: 4be7e937fe6450a4cad193f2d156d96c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -880,6 +879,55 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &1393039053
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1393039055}
+  - component: {fileID: 1393039054}
+  m_Layer: 0
+  m_Name: hitJudge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1393039054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393039053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 926f0bab5ab248f43994dc1aadff579a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitJudge
+  lineManager: {fileID: 772044309}
+  hitKey: 32
+  perfectWindow: 0.1
+  goodWindow: 0.2
+  missWindow: 0.35
+--- !u!4 &1393039055
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393039053}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.42253, y: 1.35428, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1497611904
 GameObject:
   m_ObjectHideFlags: 0
@@ -1417,3 +1465,4 @@ SceneRoots:
   - {fileID: 302250045}
   - {fileID: 1636507985}
   - {fileID: 983357160}
+  - {fileID: 1393039055}

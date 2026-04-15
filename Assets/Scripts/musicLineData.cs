@@ -7,6 +7,8 @@ public class MusicLineData
     public int beatsPerMeasure = 4;
     public List<NoteEvent> notes = new List<NoteEvent>();
 
+    public float startBeat = 0f;
+
     public float TotalBeats
     {
         get { return measureCount * beatsPerMeasure; }

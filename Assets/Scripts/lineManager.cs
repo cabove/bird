@@ -15,17 +15,11 @@ public class LineManager : MonoBehaviour
 
     public float sideSwitchDuration = 0.25f;
 
-    public float bpm = 72f;
     public int beatsPerMeasure = 4;
     public int measuresPerLine = 4;
 
-    public void AdvanceLine()
-{
-    StartCoroutine(AdvanceLineAnimated());
-}
-
-    private float lineDuration;
-    private float lineTimer = 0f;
+    private float lineDurationInBeats;
+    private int currentLineStartBeat = 0;
 
     private LineSegment currentLine;
     private LineSegment previewLine;
@@ -35,8 +29,7 @@ public class LineManager : MonoBehaviour
 
     void Start()
     {
-        float secondsPerBeat = 60f / bpm;
-        lineDuration = secondsPerBeat * beatsPerMeasure * measuresPerLine;
+        lineDurationInBeats = beatsPerMeasure * measuresPerLine;
 
         SpawnInitialLines();
 
@@ -50,17 +43,24 @@ public class LineManager : MonoBehaviour
     void Update()
     {
         if (isSwitching) return;
+        if (RhythmManager.Instance == null) return;
 
-        lineTimer += Time.deltaTime;
-        float t = Mathf.Clamp01(lineTimer / lineDuration);
+        float currentBeat = RhythmManager.Instance.GetCurrentBeat();
+        float lineProgressBeats = currentBeat - currentLineStartBeat;
+        float t = Mathf.Clamp01(lineProgressBeats / lineDurationInBeats);
 
         UpdatePlayerPosition(t);
 
-        if (lineTimer >= lineDuration)
+        if (lineProgressBeats >= lineDurationInBeats)
         {
-            lineTimer = 0f;
+            currentLineStartBeat += (int)lineDurationInBeats;
             StartCoroutine(AdvanceLineAnimated());
         }
+    }
+
+    public void AdvanceLine()
+    {
+        StartCoroutine(AdvanceLineAnimated());
     }
 
     IEnumerator AdvanceLineAnimated()
@@ -71,7 +71,7 @@ public class LineManager : MonoBehaviour
             bird.allowAutoMove = false;
 
         Vector3 startPos = player.position;
-        Vector3 endPos = new Vector3(playerStartX, player.position.y, startPos.z);
+        Vector3 endPos = new Vector3(playerStartX, playerY, startPos.z);
 
         float elapsed = 0f;
 
@@ -93,6 +93,8 @@ public class LineManager : MonoBehaviour
         SetCurrentLook(currentLine);
 
         MusicLineData newPreviewData = RhythmGenerator.GenerateRandomLine();
+        newPreviewData.startBeat = currentLine.GetLineData().startBeat + currentLine.GetLineData().TotalBeats;
+
         previewLine = Instantiate(linePrefab, previewLinePosition, Quaternion.identity);
         previewLine.BuildLine(newPreviewData);
         SetPreviewLook(previewLine);
@@ -106,7 +108,10 @@ public class LineManager : MonoBehaviour
     void SpawnInitialLines()
     {
         MusicLineData currentData = RhythmGenerator.GenerateRandomLine();
+        currentData.startBeat = 0f;
+
         MusicLineData previewData = RhythmGenerator.GenerateRandomLine();
+        previewData.startBeat = currentData.startBeat + currentData.TotalBeats;
 
         currentLine = Instantiate(linePrefab, currentLinePosition, Quaternion.identity);
         currentLine.BuildLine(currentData);
@@ -127,4 +132,9 @@ public class LineManager : MonoBehaviour
 
     void SetPreviewLook(LineSegment line) { }
     void SetCurrentLook(LineSegment line) { }
+
+    public LineSegment GetCurrentLine()
+    {
+        return currentLine;
+    }
 }

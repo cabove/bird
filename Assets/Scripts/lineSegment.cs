@@ -102,4 +102,8 @@ public class LineSegment : MonoBehaviour
             Destroy(parent.GetChild(i).gameObject);
         }
     }
+    public MusicLineData GetLineData() 
+    {
+        return currentData;
+    }
 }
