@@ -85,9 +85,9 @@ MonoBehaviour:
   barLineSprite: {fileID: 21300000, guid: cb924dc4d0b513b4a89a8bf4ede6ebf1, type: 3}
   lineWidth: 16
   quarterNoteY: 0
-  eighthPairY: 0.08
+  eighthPairY: 0
   quarterScale: 0.45
-  eighthPairScale: 0.3
+  eighthPairScale: 0.35
   barLineHeight: 0.8
 --- !u!1 &5410910396061401844
 GameObject:
