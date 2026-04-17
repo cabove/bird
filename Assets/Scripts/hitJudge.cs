@@ -17,24 +17,47 @@ public class HitJudge : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip missClip;
 
-    private HashSet<string> usedHits = new HashSet<string>();
+    private Queue<HitTarget> upcomingHits = new Queue<HitTarget>();
     private LineSegment lastLine;
+
+    private List<JudgedHit> judgedHits = new List<JudgedHit>();
 
     private class HitTarget
     {
         public int noteIndex;
         public float beat;
         public string hitId;
+        public int measureIndex;
+    }
+
+    public enum Judgment
+    {
+        Perfect,
+        Good,
+        Ok,
+        Miss
+    }
+
+    [System.Serializable]
+    public class JudgedHit
+    {
+        public string hitId;
+        public int noteIndex;
+        public int measureIndex;
+        public float beat;
+        public float delta;
+        public Judgment judgment;
     }
 
     void Update()
     {
+        CheckForLineChange();
+        AutoMissExpiredFrontNotes();
+
         if (Input.GetKeyDown(hitKey))
         {
-            JudgeHit();
+            JudgeFrontHit();
         }
-
-        CheckForLineChange();
     }
 
     void CheckForLineChange()
@@ -42,15 +65,84 @@ public class HitJudge : MonoBehaviour
         if (lineManager == null) return;
 
         LineSegment currentLine = lineManager.GetCurrentLine();
+        if (currentLine == lastLine) return;
 
-        if (currentLine != lastLine)
+        lastLine = currentLine;
+        BuildQueueForCurrentLine();
+    }
+
+    void BuildQueueForCurrentLine()
+    {
+        upcomingHits.Clear();
+
+        if (lastLine == null) return;
+
+        MusicLineData lineData = lastLine.GetLineData();
+        if (lineData == null || lineData.notes == null) return;
+
+        for (int i = 0; i < lineData.notes.Count; i++)
         {
-            usedHits.Clear();
-            lastLine = currentLine;
+            NoteEvent note = lineData.notes[i];
+
+            int measureIndex = Mathf.FloorToInt(note.beatPosition / lineData.beatsPerMeasure);
+
+            if (note.noteType == NoteType.Quarter)
+            {
+                upcomingHits.Enqueue(new HitTarget
+                {
+                    noteIndex = i,
+                    beat = lineData.startBeat + note.beatPosition,
+                    hitId = i + "_0",
+                    measureIndex = measureIndex
+                });
+            }
+            else if (note.noteType == NoteType.EighthPair)
+            {
+                upcomingHits.Enqueue(new HitTarget
+                {
+                    noteIndex = i,
+                    beat = lineData.startBeat + note.beatPosition,
+                    hitId = i + "_0",
+                    measureIndex = measureIndex
+                });
+
+                // second eighth still belongs to same measure in your current design
+                upcomingHits.Enqueue(new HitTarget
+                {
+                    noteIndex = i,
+                    beat = lineData.startBeat + note.beatPosition + 0.5f,
+                    hitId = i + "_1",
+                    measureIndex = measureIndex
+                });
+            }
         }
     }
 
-    void JudgeHit()
+    void AutoMissExpiredFrontNotes()
+    {
+        if (RhythmManager.Instance == null) return;
+
+        float currentBeat = RhythmManager.Instance.GetCurrentBeat();
+
+        while (upcomingHits.Count > 0)
+        {
+            HitTarget front = upcomingHits.Peek();
+
+            if (currentBeat > front.beat + missWindow)
+            {
+                RegisterJudgment(front, currentBeat - front.beat, Judgment.Miss);
+                PlayMissSound();
+                Debug.Log($"MISS - no input - measure {front.measureIndex + 1}");
+                upcomingHits.Dequeue();
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+
+    void JudgeFrontHit()
     {
         if (lineManager == null)
         {
@@ -64,127 +156,66 @@ public class HitJudge : MonoBehaviour
             return;
         }
 
-        LineSegment currentLine = lineManager.GetCurrentLine();
-        if (currentLine == null)
+        if (upcomingHits.Count == 0)
         {
-            Debug.Log("No current line.");
-            return;
-        }
-
-        MusicLineData lineData = currentLine.GetLineData();
-        if (lineData == null || lineData.notes == null || lineData.notes.Count == 0)
-        {
-            Debug.Log("No notes in current line.");
+            Debug.Log("No available note found.");
             return;
         }
 
         float currentBeat = RhythmManager.Instance.GetCurrentBeat();
+        HitTarget front = upcomingHits.Peek();
 
-        List<HitTarget> targets = new List<HitTarget>();
+        float delta = currentBeat - front.beat;
+        float absDelta = Mathf.Abs(delta);
 
-        for (int i = 0; i < lineData.notes.Count; i++)
-        {
-            NoteEvent note = lineData.notes[i];
-
-            if (note.noteType == NoteType.Quarter)
-            {
-                string hitId = i + "_0";
-
-                if (!usedHits.Contains(hitId))
-                {
-                    targets.Add(new HitTarget
-                    {
-                        noteIndex = i,
-                        beat = lineData.startBeat + note.beatPosition,
-                        hitId = hitId
-                    });
-                }
-            }
-            else if (note.noteType == NoteType.EighthPair)
-            {
-                string firstHitId = i + "_0";
-                string secondHitId = i + "_1";
-
-                if (!usedHits.Contains(firstHitId))
-                {
-                    targets.Add(new HitTarget
-                    {
-                        noteIndex = i,
-                        beat = lineData.startBeat + note.beatPosition,
-                        hitId = firstHitId
-                    });
-                }
-
-                if (!usedHits.Contains(secondHitId))
-                {
-                    targets.Add(new HitTarget
-                    {
-                        noteIndex = i,
-                        beat = lineData.startBeat + note.beatPosition + 0.5f,
-                        hitId = secondHitId
-                    });
-                }
-            }
-        }
-
-        if (targets.Count == 0)
-        {
-            Debug.Log("No available note found.");
-            return;
-        }
-
-        HitTarget closestTarget = null;
-        float closestAbsDelta = Mathf.Infinity;
-        float closestDelta = 0f;
-
-        for (int i = 0; i < targets.Count; i++)
-        {
-            float delta = currentBeat - targets[i].beat;
-            float absDelta = Mathf.Abs(delta);
-
-            if (absDelta < closestAbsDelta)
-            {
-                closestAbsDelta = absDelta;
-                closestDelta = delta;
-                closestTarget = targets[i];
-            }
-        }
-
-        if (closestTarget == null)
-        {
-            Debug.Log("No available note found.");
-            return;
-        }
-
-        if (closestAbsDelta > missWindow)
+        if (absDelta > missWindow)
         {
             PlayMissSound();
-            Debug.Log("MISS - too far from note");
+            Debug.Log("MISS - too far from next note");
             return;
         }
 
-        usedHits.Add(closestTarget.hitId);
-
         string timingSide;
-        if (closestDelta < -0.01f)
+        if (delta < -0.01f)
             timingSide = "EARLY";
-        else if (closestDelta > 0.01f)
+        else if (delta > 0.01f)
             timingSide = "LATE";
         else
             timingSide = "ON TIME";
 
-        if (closestAbsDelta <= perfectWindow)
+        Judgment result;
+
+        if (absDelta <= perfectWindow)
         {
-            Debug.Log("PERFECT - " + timingSide + " - delta: " + closestDelta.ToString("F3"));
+            result = Judgment.Perfect;
+            Debug.Log("PERFECT - " + timingSide + " - delta: " + delta.ToString("F3"));
         }
-        else if (closestAbsDelta <= goodWindow)
+        else if (absDelta <= goodWindow)
         {
-            Debug.Log("GOOD - " + timingSide + " - delta: " + closestDelta.ToString("F3"));
+            result = Judgment.Good;
+            Debug.Log("GOOD - " + timingSide + " - delta: " + delta.ToString("F3"));
         }
         else
         {
-            Debug.Log("OK - " + timingSide + " - delta: " + closestDelta.ToString("F3"));
+            result = Judgment.Ok;
+            Debug.Log("OK - " + timingSide + " - delta: " + delta.ToString("F3"));
         }
+
+        RegisterJudgment(front, delta, result);
+        upcomingHits.Dequeue();
+    }
+
+    void RegisterJudgment(HitTarget target, float delta, Judgment judgment)
+    {
+        judgedHits.Add(new JudgedHit
+        {
+            hitId = target.hitId,
+            noteIndex = target.noteIndex,
+            measureIndex = target.measureIndex,
+            beat = target.beat,
+            delta = delta,
+            judgment = judgment
+        });
     }
 
     void PlayMissSound()
@@ -193,5 +224,25 @@ public class HitJudge : MonoBehaviour
         {
             audioSource.PlayOneShot(missClip);
         }
+    }
+
+    public List<JudgedHit> GetJudgedHits()
+    {
+        return judgedHits;
+    }
+
+    public List<int> GetMeasuresWithMistakes()
+    {
+        HashSet<int> badMeasures = new HashSet<int>();
+
+        for (int i = 0; i < judgedHits.Count; i++)
+        {
+            if (judgedHits[i].judgment == Judgment.Ok || judgedHits[i].judgment == Judgment.Miss)
+            {
+                badMeasures.Add(judgedHits[i].measureIndex);
+            }
+        }
+
+        return new List<int>(badMeasures);
     }
 }
