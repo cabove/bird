@@ -550,6 +550,7 @@ MonoBehaviour:
   chapter1Point: {fileID: 1648366758}
   chapter2Point: {fileID: 238947178}
   chapter3Point: {fileID: 329533638}
+  screenManager: {fileID: 2076618946}
 --- !u!1 &189075563
 GameObject:
   m_ObjectHideFlags: 0
@@ -702,7 +703,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &196911438
 Transform:
   m_ObjectHideFlags: 0
@@ -899,7 +900,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 168587562}
         m_TargetAssemblyTypeName: LevelSelectMarker, Assembly-CSharp
-        m_MethodName: MoveToTutorial
+        m_MethodName: OnTutorialClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1031,7 +1032,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 168587562}
         m_TargetAssemblyTypeName: LevelSelectMarker, Assembly-CSharp
-        m_MethodName: MoveToChapter2
+        m_MethodName: OnChapter2Clicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1194,7 +1195,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 168587562}
         m_TargetAssemblyTypeName: LevelSelectMarker, Assembly-CSharp
-        m_MethodName: MoveToChapter3
+        m_MethodName: OnChapter3Clicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1242,6 +1243,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 329533637}
   m_CullTransparentMesh: 1
+--- !u!1 &335598111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 335598113}
+  - component: {fileID: 335598112}
+  m_Layer: 0
+  m_Name: gameplayStarter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &335598112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335598111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe30ed606b3b57b41819d72146fe96cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameplayStarter
+  player: {fileID: 1217816083}
+  playerStartPosition: {x: -7, y: 0, z: 0}
+  playerRb: {fileID: 1217816084}
+--- !u!4 &335598113
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335598111}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 21.87065, y: -6.27451, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &427389913
 GameObject:
   m_ObjectHideFlags: 0
@@ -1413,7 +1461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3084,7 +3132,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.3, z: 0}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1217816083}
@@ -4290,7 +4338,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 168587562}
         m_TargetAssemblyTypeName: LevelSelectMarker, Assembly-CSharp
-        m_MethodName: MoveToChapter1
+        m_MethodName: OnChapter1Clicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4808,6 +4856,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2057084130}
   m_CullTransparentMesh: 1
+--- !u!1 &2076618945
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2076618947}
+  - component: {fileID: 2076618946}
+  m_Layer: 0
+  m_Name: screenM
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2076618946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076618945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 203c4b81613c8e84894dbedf00fcb763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScreenManager
+  titleScreen: {fileID: 1895850473}
+  levelSelectScreen: {fileID: 2146626175}
+  gameplayRoot: {fileID: 196911437}
+  gameplayStarter: {fileID: 335598112}
+--- !u!4 &2076618947
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076618945}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 21.87065, y: -6.27451, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2139220653
 GameObject:
   m_ObjectHideFlags: 0
@@ -4900,7 +4996,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2146626176
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5156,6 +5252,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
+  - {fileID: 2076618947}
+  - {fileID: 335598113}
   - {fileID: 196911438}
   - {fileID: 55078166}
   - {fileID: 858808041}
