@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b94ef22301338774ba1c1a845b0f86bb
+guid: f9949f0b15affc645aa32a17c94f69cc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -782961144208072295
-    second: eighthNote-double_0
+      213: 2866878205763963000
+    second: halfNote_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -55,7 +55,7 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: eighthNote-double_0
+      name: halfNote_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 157
-        height: 134
+        x: 42
+        y: 11
+        width: 74
+        height: 136
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9916b86dcfc5225f0800000000000000
-      internalID: -782961144208072295
+      spriteID: 878cedce98239c720800000000000000
+      internalID: 2866878205763963000
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      eighthNote-double_0: -782961144208072295
+      halfNote_0: 2866878205763963000
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
