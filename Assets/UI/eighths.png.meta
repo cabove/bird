@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 62205efaea091ed4fb85f9d7530a9b00
+guid: 9697694c4bb58554ca1ccc4038ff7dbc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7183925702635380695
-    second: eighthNote-single_0
+      213: 1128014610447716331
+    second: eighths_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,10 +100,10 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: eighthNote-single_0
+      name: eighths_0
       rect:
         serializedVersion: 2
-        x: 31
+        x: 117
         y: 11
         width: 96
         height: 136
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 920ae91b2a19d4c90800000000000000
-      internalID: -7183925702635380695
+      spriteID: befcf2dcf4387af00800000000000000
+      internalID: 1128014610447716331
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      eighthNote-single_0: -7183925702635380695
+      eighths_0: 1128014610447716331
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

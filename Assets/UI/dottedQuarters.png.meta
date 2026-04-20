@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 2dd2072aa5db65b478b81994e07b20c7
+guid: 190228f4608b1a24a9e9c0162098778f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 130749007285332875
-    second: quarterNote_0
+      213: 598101958922975271
+    second: dottedQuarters_0
+  - first:
+      213: -1646236132813214730
+    second: dottedQuarters_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,10 +103,10 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: quarterNote_0
+      name: dottedQuarters_0
       rect:
         serializedVersion: 2
-        x: 43
+        x: 109
         y: 11
         width: 72
         height: 136
@@ -115,8 +118,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b8b2af5878380d100800000000000000
-      internalID: 130749007285332875
+      spriteID: 728b1111092ec4800800000000000000
+      internalID: 598101958922975271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dottedQuarters_1
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 26
+        width: 33
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fb614795f46729e0800000000000000
+      internalID: -1646236132813214730
       vertices: []
       indices: 
       edges: []
@@ -135,7 +160,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      quarterNote_0: 130749007285332875
+      dottedQuarters_0: 598101958922975271
+      dottedQuarters_1: -1646236132813214730
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
