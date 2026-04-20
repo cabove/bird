@@ -80,8 +80,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LineSegment
   notesParent: {fileID: 6205749585703289485}
   barLinesParent: {fileID: 6239492828288965342}
-  quarterNotePrefab: {fileID: 4845070685133899748, guid: 69ee6db61eb070249a45c081724b1b16, type: 3}
-  eighthPairPrefab: {fileID: 1592424134012755884, guid: 665be538637b9b4499fd775a1b1cb625, type: 3}
+  quarterNotePrefab: {fileID: 7869815575936446776, guid: 193e040b9bad35d4d9e632b4b0a34b11, type: 3}
+  eighthPairPrefab: {fileID: 1737432767917149443, guid: df734931b820fce478943bfb153b21a8, type: 3}
   barLineSprite: {fileID: 21300000, guid: cb924dc4d0b513b4a89a8bf4ede6ebf1, type: 3}
   lineWidth: 16
   quarterNoteY: 0
