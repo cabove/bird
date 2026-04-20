@@ -1,22 +1,10 @@
 fileFormatVersion: 2
-guid: 20678553e1159104cab7fb1f0f883310
+guid: 57dc5d051d6399e4e82f484118f771ab
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5815411782194074113
-    second: UI-Chapters_0
-  - first:
-      213: 7875832166125301668
-    second: UI-Chapters_1
-  - first:
-      213: -6717995611300017989
-    second: UI-Chapters_2
-  - first:
-      213: 8344878597069934341
-    second: UI-Chapters_3
-  - first:
-      213: 6704111052183262537
-    second: UI-Chapters_4
+      213: -6601305682875250502
+    second: Frame 9(1)_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -58,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -125,57 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI-Chapters_0
+      name: Frame 9(1)_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 49
-        width: 179
-        height: 229
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1029c4c543e74b050800000000000000
-      internalID: 5815411782194074113
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: UI-Chapters_1
-      rect:
-        serializedVersion: 2
-        x: 181
-        y: 49
-        width: 384
-        height: 229
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4af6e7c80a39c4d60800000000000000
-      internalID: 7875832166125301668
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: UI-Chapters_2
-      rect:
-        serializedVersion: 2
-        x: 568
         y: 0
-        width: 180
-        height: 228
+        width: 2560
+        height: 1664
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,52 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bb844d1c592e4c2a0800000000000000
-      internalID: -6717995611300017989
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: UI-Chapters_3
-      rect:
-        serializedVersion: 2
-        x: 751
-        y: 49
-        width: 381
-        height: 229
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 50f0d18fed6fec370800000000000000
-      internalID: 8344878597069934341
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: UI-Chapters_4
-      rect:
-        serializedVersion: 2
-        x: 1134
-        y: 49
-        width: 356
-        height: 179
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 94557286b79c90d50800000000000000
-      internalID: 6704111052183262537
+      spriteID: ab80476e4737364a0800000000000000
+      internalID: -6601305682875250502
       vertices: []
       indices: 
       edges: []
@@ -238,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -248,11 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      UI-Chapters_0: 5815411782194074113
-      UI-Chapters_1: 7875832166125301668
-      UI-Chapters_2: -6717995611300017989
-      UI-Chapters_3: 8344878597069934341
-      UI-Chapters_4: 6704111052183262537
+      Frame 9(1)_0: -6601305682875250502
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
