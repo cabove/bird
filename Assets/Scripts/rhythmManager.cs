@@ -8,13 +8,14 @@ public class RhythmManager : MonoBehaviour
     public float bpm = 72f;
     public float songOffset = 0f;
 
-    [Header("Results Panel (Same Scene)")]
+    [Header("Results Panel")]
     public bool autoShowResultsPanelOnSongEnd = true;
     public GameObject resultsPanel;
     public GameObject[] gameplayObjectsToDisableOnSongEnd;
 
     private float secondsPerBeat;
     private bool hasTriggeredSongEnd = false;
+    private bool songStarted = false;
 
     void Awake()
     {
@@ -24,12 +25,20 @@ public class RhythmManager : MonoBehaviour
 
     void Start()
     {
-        if (resultsPanel != null) resultsPanel.SetActive(false);
-        if (audioSource != null) audioSource.Play();
+        if (resultsPanel != null)
+            resultsPanel.SetActive(false);
+
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+            audioSource.time = 0f;
+            audioSource.playOnAwake = false;
+        }
     }
 
     void Update()
     {
+        if (!songStarted) return;
         if (!autoShowResultsPanelOnSongEnd || hasTriggeredSongEnd) return;
         if (audioSource == null || audioSource.clip == null) return;
 
@@ -45,13 +54,31 @@ public class RhythmManager : MonoBehaviour
                 }
             }
 
-            if (resultsPanel != null) resultsPanel.SetActive(true);
+            if (resultsPanel != null)
+                resultsPanel.SetActive(true);
         }
+    }
+
+    public void PlaySongFromBeginning()
+    {
+        if (audioSource == null) return;
+
+        hasTriggeredSongEnd = false;
+        songStarted = true;
+
+        audioSource.Stop();
+        audioSource.time = 0f;
+        audioSource.Play();
+    }
+
+    public bool HasSongStarted()
+    {
+        return songStarted;
     }
 
     public float GetSongTime()
     {
-        if (audioSource == null) return 0f;
+        if (!songStarted || audioSource == null) return 0f;
         return audioSource.time - songOffset;
     }
 

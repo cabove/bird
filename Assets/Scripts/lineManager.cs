@@ -38,7 +38,7 @@ public class LineManager : MonoBehaviour
         if (isSwitching) return;
         if (currentLine == null) return;
         if (RhythmManager.Instance == null) return;
-
+        if (!RhythmManager.Instance.HasSongStarted()) return;
         MusicLineData currentData = currentLine.GetLineData();
         if (currentData == null) return;
 
