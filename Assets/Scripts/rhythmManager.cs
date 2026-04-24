@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class RhythmManager : MonoBehaviour
 {
+    public float maxSongLength = 35f;
     public static RhythmManager Instance;
 
     public AudioSource audioSource;
@@ -42,10 +43,10 @@ public class RhythmManager : MonoBehaviour
         if (!autoShowResultsPanelOnSongEnd || hasTriggeredSongEnd) return;
         if (audioSource == null || audioSource.clip == null) return;
 
-        if (!audioSource.isPlaying && audioSource.time >= audioSource.clip.length)
+        if ((!audioSource.isPlaying && audioSource.time >= audioSource.clip.length) || audioSource.time >= maxSongLength)
         {
             hasTriggeredSongEnd = true;
-
+            audioSource.Stop();
             if (gameplayObjectsToDisableOnSongEnd != null)
             {
                 foreach (GameObject go in gameplayObjectsToDisableOnSongEnd)
