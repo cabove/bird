@@ -22,36 +22,37 @@ public class ResultsUI : MonoBehaviour
     {
         var hits = hitJudge.GetJudgedHits();
 
-        int perfect = 0;
-        int good = 0;
-        int ok = 0;
+        int early = 0;
+        int onTime = 0;
+        int late = 0;
         int miss = 0;
 
         foreach (var h in hits)
         {
-            if (h.judgment == HitJudge.Judgment.Perfect) perfect++;
-            else if (h.judgment == HitJudge.Judgment.Good) good++;
-            else if (h.judgment == HitJudge.Judgment.Ok) ok++;
+            if (h.judgment == HitJudge.Judgment.Early) early++;
+            else if (h.judgment == HitJudge.Judgment.OnTime) onTime++;
+            else if (h.judgment == HitJudge.Judgment.Late) late++;
             else if (h.judgment == HitJudge.Judgment.Miss) miss++;
         }
 
-        perfectText.text = "Perfect: " + perfect;
-        goodText.text = "Good: " + good;
-        okText.text = "OK: " + ok;
+        // You can keep using the same text boxes in the Inspector.
+        perfectText.text = "Early: " + early;
+        goodText.text = "On Time: " + onTime;
+        okText.text = "Late: " + late;
         missText.text = "Miss: " + miss;
 
         var measures = hitJudge.GetMeasuresWithMistakes();
 
         if (measures.Count == 0)
         {
-            badMeasuresText.text = "Measures: None";
+            badMeasuresText.text = "Measures with mistakes: None";
         }
         else
         {
             for (int i = 0; i < measures.Count; i++)
                 measures[i] += 1;
 
-            badMeasuresText.text = "Measures: " + string.Join(", ", measures);
+            badMeasuresText.text = "Measures with mistakes: " + string.Join(", ", measures);
         }
     }
 

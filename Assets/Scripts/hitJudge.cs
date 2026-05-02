@@ -8,10 +8,15 @@ public class HitJudge : MonoBehaviour
     [Header("Input")]
     public KeyCode hitKey = KeyCode.Space;
 
-    [Header("Timing Windows (in beats)")]
-    public float perfectWindow = 0.10f;
-    public float goodWindow = 0.20f;
-    public float missWindow = 0.35f;
+    [Header("Timing Windows - in beats")]
+    public float onTimeWindow = 0.10f;
+    public float hitWindow = 0.35f;
+
+    [Header("Colors")]
+    public Color earlyColor = Color.red;
+    public Color onTimeColor = Color.green;
+    public Color lateColor = Color.blue;
+    public Color missColor = Color.gray;
 
     [Header("Audio")]
     public AudioSource audioSource;
@@ -32,9 +37,9 @@ public class HitJudge : MonoBehaviour
 
     public enum Judgment
     {
-        Perfect,
-        Good,
-        Ok,
+        Early,
+        OnTime,
+        Late,
         Miss
     }
 
@@ -106,7 +111,6 @@ public class HitJudge : MonoBehaviour
                     measureIndex = measureIndex
                 });
 
-                // second eighth still belongs to same measure in your current design
                 upcomingHits.Enqueue(new HitTarget
                 {
                     noteIndex = i,
@@ -128,11 +132,12 @@ public class HitJudge : MonoBehaviour
         {
             HitTarget front = upcomingHits.Peek();
 
-            if (currentBeat > front.beat + missWindow)
+            if (currentBeat > front.beat + hitWindow)
             {
                 RegisterJudgment(front, currentBeat - front.beat, Judgment.Miss);
+                ColorNote(front, Judgment.Miss);
                 PlayMissSound();
-                Debug.Log($"MISS - no input - measure {front.measureIndex + 1}");
+                Debug.Log("MISS - no input - measure " + (front.measureIndex + 1));
                 upcomingHits.Dequeue();
             }
             else
@@ -168,40 +173,33 @@ public class HitJudge : MonoBehaviour
         float delta = currentBeat - front.beat;
         float absDelta = Mathf.Abs(delta);
 
-        if (absDelta > missWindow)
+        if (absDelta > hitWindow)
         {
             PlayMissSound();
             Debug.Log("MISS - too far from next note");
             return;
         }
 
-        string timingSide;
-        if (delta < -0.01f)
-            timingSide = "EARLY";
-        else if (delta > 0.01f)
-            timingSide = "LATE";
-        else
-            timingSide = "ON TIME";
-
         Judgment result;
 
-        if (absDelta <= perfectWindow)
+        if (absDelta <= onTimeWindow)
         {
-            result = Judgment.Perfect;
-            Debug.Log("PERFECT - " + timingSide + " - delta: " + delta.ToString("F3"));
+            result = Judgment.OnTime;
+            Debug.Log("ON TIME - delta: " + delta.ToString("F3"));
         }
-        else if (absDelta <= goodWindow)
+        else if (delta < 0f)
         {
-            result = Judgment.Good;
-            Debug.Log("GOOD - " + timingSide + " - delta: " + delta.ToString("F3"));
+            result = Judgment.Early;
+            Debug.Log("EARLY - delta: " + delta.ToString("F3"));
         }
         else
         {
-            result = Judgment.Ok;
-            Debug.Log("OK - " + timingSide + " - delta: " + delta.ToString("F3"));
+            result = Judgment.Late;
+            Debug.Log("LATE - delta: " + delta.ToString("F3"));
         }
 
         RegisterJudgment(front, delta, result);
+        ColorNote(front, result);
         upcomingHits.Dequeue();
     }
 
@@ -216,6 +214,28 @@ public class HitJudge : MonoBehaviour
             delta = delta,
             judgment = judgment
         });
+    }
+
+    void ColorNote(HitTarget target, Judgment judgment)
+    {
+        if (lastLine == null) return;
+
+        if (judgment == Judgment.Early)
+        {
+            lastLine.ColorHit(target.hitId, earlyColor);
+        }
+        else if (judgment == Judgment.OnTime)
+        {
+            lastLine.ColorHit(target.hitId, onTimeColor);
+        }
+        else if (judgment == Judgment.Late)
+        {
+            lastLine.ColorHit(target.hitId, lateColor);
+        }
+        else if (judgment == Judgment.Miss)
+        {
+            lastLine.ColorHit(target.hitId, missColor);
+        }
     }
 
     void PlayMissSound()
@@ -235,11 +255,11 @@ public class HitJudge : MonoBehaviour
     {
         HashSet<int> badMeasures = new HashSet<int>();
 
-        for (int i = 0; i < judgedHits.Count; i++)
+        foreach (var h in judgedHits)
         {
-            if (judgedHits[i].judgment == Judgment.Ok || judgedHits[i].judgment == Judgment.Miss)
+            if (h.judgment == Judgment.Early || h.judgment == Judgment.Late || h.judgment == Judgment.Miss)
             {
-                badMeasures.Add(judgedHits[i].measureIndex);
+                badMeasures.Add(h.measureIndex);
             }
         }
 

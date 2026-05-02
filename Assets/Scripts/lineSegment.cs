@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LineSegment : MonoBehaviour
@@ -17,9 +18,14 @@ public class LineSegment : MonoBehaviour
 
     private MusicLineData currentData;
 
+    // This lets HitJudge find the note sprite and change its color.
+    private Dictionary<string, SpriteRenderer> noteRenderers = new Dictionary<string, SpriteRenderer>();
+
     public void BuildLine(MusicLineData lineData)
     {
         currentData = lineData;
+
+        noteRenderers.Clear();
 
         ClearChildren(notesParent);
         ClearChildren(barLinesParent);
@@ -37,25 +43,55 @@ public class LineSegment : MonoBehaviour
         float rightX = lineWidth / 2f;
 
         float noteShift = 0.4f;
-        foreach (NoteEvent note in currentData.notes)
+
+        for (int i = 0; i < currentData.notes.Count; i++)
         {
+            NoteEvent note = currentData.notes[i];
+
             float t = note.beatPosition / totalBeats;
             float x = Mathf.Lerp(leftX, rightX, t) + noteShift;
 
             if (note.noteType == NoteType.Quarter)
             {
                 GameObject noteObj = Instantiate(quarterNotePrefab, notesParent);
+                noteObj.name = "QuarterNote_" + i;
                 noteObj.transform.localPosition = new Vector3(x, quarterNoteY, 0f);
                 noteObj.transform.localScale = new Vector3(quarterScale, quarterScale, 1f);
                 SetSorting(noteObj);
+
+                SpriteRenderer sr = noteObj.GetComponent<SpriteRenderer>();
+                if (sr != null)
+                {
+                    sr.color = Color.white;
+                    noteRenderers[i + "_0"] = sr;
+                }
             }
             else if (note.noteType == NoteType.EighthPair)
             {
                 GameObject pairObj = Instantiate(eighthPairPrefab, notesParent);
+                pairObj.name = "EighthPair_" + i;
                 pairObj.transform.localPosition = new Vector3(x, eighthPairY, 0f);
                 pairObj.transform.localScale = new Vector3(eighthPairScale, eighthPairScale, 1f);
                 SetSorting(pairObj);
+
+                SpriteRenderer sr = pairObj.GetComponent<SpriteRenderer>();
+                if (sr != null)
+                {
+                    sr.color = Color.white;
+
+                    // Both eighth notes share one sprite, so either hit colors the same pair.
+                    noteRenderers[i + "_0"] = sr;
+                    noteRenderers[i + "_1"] = sr;
+                }
             }
+        }
+    }
+
+    public void ColorHit(string hitId, Color color)
+    {
+        if (noteRenderers.ContainsKey(hitId) && noteRenderers[hitId] != null)
+        {
+            noteRenderers[hitId].color = color;
         }
     }
 
@@ -97,12 +133,15 @@ public class LineSegment : MonoBehaviour
 
     void ClearChildren(Transform parent)
     {
+        if (parent == null) return;
+
         for (int i = parent.childCount - 1; i >= 0; i--)
         {
             Destroy(parent.GetChild(i).gameObject);
         }
     }
-    public MusicLineData GetLineData() 
+
+    public MusicLineData GetLineData()
     {
         return currentData;
     }
